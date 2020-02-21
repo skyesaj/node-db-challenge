@@ -40,11 +40,20 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 - [ ] Explain the difference between `Relational Databases` and `SQL`.
 
+:relational Databases store data that is related. SQL is used to manipulate the data presented.
+
 - [ ] Why do tables need a `primary key`?
+
+: Tables need a primary key so they can be identified easy.
 
 - [ ] What is the name given to a table column that references the primary key on another table.
 
+: It is called Forgeign Key.
+
+
 - [ ] What do we need in order to have a _many to many_ relationship between two tables.
+
+: you would need at least three tables.
 
 ## Minimum Viable Product
 
