@@ -4,9 +4,40 @@ const project = require("./projectModel");
 
 const router = express.Router();
 
-// router.get("/", (req, res) => {
-//   res.send("projects");
-// });
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  project
+    .getProjectById(id)
+    .then(proj => {
+      // res.status(200).json(project);
+      // console.log(proj, "project");
+      project
+        .getTask(id)
+        .then(task => {
+          // console.log(task, "task");
+          project
+            .getResourceProj(id)
+            .then(resource => {
+              // console.log(resource, "resource");
+              res.status(200).json({
+                ...proj,
+                task: task,
+                resources: resource
+              });
+            })
+            .catch(error => {
+              res.status(500).json({ error: "noooo" });
+            });
+        })
+        .catch(error => {
+          res.status(500).json({ error: "nooo" });
+        });
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({ error: "couldnt get project id" });
+    });
+});
 
 router.get("/", (req, res) => {
   project
@@ -33,8 +64,9 @@ router.get("/resource", (req, res) => {
 });
 
 router.get("/:id/task", (req, res) => {
+  const { id } = req.params;
   project
-    .getTask()
+    .getTask(id)
     .then(response => {
       res.status(200).json(response);
     })
@@ -88,7 +120,9 @@ router.post("/:id/task", (req, res) => {
     project
       .addTask(send)
       .then(task => {
-        project.getTaskById(task).then(tasks => {
+        // console.log(task);
+        project.getTaskById(task[0]).then(tasks => {
+          console.log(tasks);
           res.status(201).json(tasks);
         });
       })

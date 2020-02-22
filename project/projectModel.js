@@ -14,7 +14,7 @@ function getProject() {
   return db("project");
 }
 
-function getProjectById() {
+function getProjectById(id) {
   return db("resource")
     .where({ id })
     .first();
@@ -28,14 +28,23 @@ function addProject(projectData) {
   return db("project").insert(projectData);
 }
 
-function addTask(taskData) {
+function addTask(taskData, id) {
   return db("task").insert(taskData);
 }
 
-function getTask() {
+function getTask(id) {
   return db("task")
-    .join("project", "project.id", "task.id")
-    .select("*");
+    .join("project", "project.id", "task.project_id")
+    .select("*")
+    .where("task.project_id", id);
+}
+
+function getResourceProj(id) {
+  return db("project_resource as pr")
+    .join("resource as r", "r.id", "pr.resource_id")
+    .join("project as p", "p.id", "pr.project_id")
+    .select("r.*")
+    .where("pr.project_id", id);
 }
 
 function getTaskById(id) {
@@ -45,6 +54,7 @@ function getTaskById(id) {
 }
 
 module.exports = {
+  getResourceProj,
   getResource,
   getProjectById,
   getResourceById,
